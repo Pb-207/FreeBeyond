@@ -5,13 +5,15 @@ echo "本脚本用于在Linux服务器上自动化安装并配置NaiveProxy服�
 printf "按Enter键以开始。"
 read pause
 sudo ufw disable
-sudo apt-get install --fix-missing golang-go
+sudo apt-get install golang-go
+sudo apt-get --fix-missing install golang-go
 sudo go env -w GO111MODULE=on
 sudo go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 sudo ~/go/bin/xcaddy build --with github.com/caddyserver/forwardproxy@caddy2=github.com/klzgrad/forwardproxy@naive
 cp caddy /usr/bin/
 sudo setcap cap_net_bind_service=+ep /usr/bin/caddy
 sudo apt-get install nginx
+sudo apt-get --fix-missing install nginx
 sudo systemctl stop nginx
 sudo apt-get install socat
 sudo rm -rf /etc/crt.crt
