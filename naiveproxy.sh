@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo systemctl stop nginx
 cd ~/.acme.sh/
 alias acme.sh=~/.acme.sh/acme.sh
 ./acme.sh --renew-all
