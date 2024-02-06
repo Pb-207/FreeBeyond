@@ -30,7 +30,7 @@ alias acme.sh=~/.acme.sh/acme.sh
 printf "请输入您的域名："
 read host
 ./acme.sh --issue -d ${host} --standalone --force
-./acme.sh --install-cert -d ${host} --key-file /etc/key.key --fullchain-file /etc/crt.crt --reloadcmd "~/caddy-start.sh"
+./acme.sh --install-cert -d ${host} --key-file /etc/key.key --fullchain-file /etc/crt.crt
 sudo chmod 666 /etc/crt.crt
 sudo chmod 666 /etc/key.key
 printf "请输入您准备用于开启NaiveProxy服务的端口号（建议使用443）："
