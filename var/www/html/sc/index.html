@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://bootswatch.com/4/slate/bootstrap.css" rel="stylesheet" crossorigin="anonymous">
+    <title>Star Citizen Ships</title>
+  </head>
+  <body>
+    
+    <div class="container-fluid">
+      
+<!-- html templates -->
+<script id="ship-item-template" type="text/x-custom-template">
+   <li class="list-group-item">
+        <div class="media">
+          <img class="mr-3 imageurl" src="" alt="">
+            <div class="media-body">
+              <h5 class="mt-0">
+                <strong><span class="name"></span></strong> <span class="text-muted">by <span class="manufacturer"></span></span>
+              </h5>
+              <p class="description"></p>
+                <small class="">
+                  Focus: <span class="focus text-muted"></span>
+                  | Type: <span class="type text-muted"></span>
+                  | Cargo: <span class="cargocapacity text-muted"></span>
+                  | Price: <span class="price text-muted"></span>
+                  | Mass: <span class="mass text-muted"></span>
+                  | L/H: <span class="length text-muted"></span>/<span class="height text-muted"></span>
+                  | Crew: <span class="min_crew text-muted"></span>-<span class="max_crew text-muted"></span>
+                  | Status: <span class="production_status text-muted"></span>
+                </small>
+            </div>
+            <div class="ml-3" src="..." alt="Generic placeholder image">
+              <a type="button" href="" target="_blank" class="url btn btn-primary btn-sm btn-block"><i class="fa fa-external-link"></i>&nbsp;&nbsp;RSI Store</a>
+            </div>
+    
+        </div>
+      </li>
+</script>
+<!-- / html templates -->
+      
+<!-- Content here -->
+<h1>Star Citizen</h1>
+    
+<div class="card" style="">
+  <div class="card-header">Ships <i class="spinner fa fa-spinner fa-spin"></i></div>
+  <div class="card-body">
+    <ul class="list-group" id="shiplist"></ul>
+  </div>
+</div>
+      
+<div class="text-muted">Utilizing api.starcitizen-api.com</div>
+</div> 
+    
+    <!-- JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+    
+  </body>
+</html>
+
+<script>
+var shipitemtemplate = $('#ship-item-template').html();
+
+$.ajax({     
+    type: "GET",
+    url: 'https://api.starcitizen-api.com/8d0808d3eccbefafff96a49edb1b4e84/v1/cache/ships',
+    crossDomain: true,
+    beforeSend: function() {
+      $(".spinner").show();
+      $('#shiplist').empty();
+    },
+    complete: function(){$(".spinner").hide();},
+    success: function (json) {
+      //console.log(json.data);   
+     
+      $.each(json.data, function(idx, ship){
+        if (ship) {
+          // console.log(ship.name);
+          $(shipitemtemplate).find(".ship_name").text(ship.name);
+          var t = $(shipitemtemplate);
+          
+          var url = (ship.url.startsWith("http") ? ship.url : "https://robertsspaceindustries.com"+ship.url);
+          
+          t.find(".manufacturer").text(ship.manufacturer.name);
+          t.find(".manufacturer_code").text(ship.manufacturer.code);
+          t.find(".name").text(ship.name);
+          t.find(".imageurl").attr("alt", ship.name);
+          t.find(".description").text(ship.description);
+          t.find(".focus").text(ship.focus);
+          t.find(".type").text(ship.type);
+          t.find(".cargocapacity").text(ship.cargocapacity == null || ship.cargocapacity == 0 || !ship.cargocapacity ? "NA" : ship.cargocapacity);
+          t.find(".price").text(!ship.price || ship.price == null || ship.price == 0 ? "NA" : "$" + ship.price);
+          t.find(".mass").text(ship.mass);
+          t.find(".length").text(ship.length);
+          t.find(".height").text(ship.height);
+          t.find(".min_crew").text(ship.min_crew);
+          t.find(".max_crew").text(ship.max_crew);
+          t.find(".production_status").text(ship.production_status);
+          t.find(".url").attr("href", url).attr("title", url);
+          
+          if (ship.media && ship.media[0].images) {
+            if (ship.media[0].images.avatar && ship.media[0].images.avatar.length) {
+              var imgurl = ship.media[0].images.avatar.startsWith("http") ? ship.media[0].images.avatar : "https://robertsspaceindustries.com/"+ship.media[0].images.avatar;
+              t.find(".imageurl").attr("src", imgurl);
+            }
+          }
+          $('#shiplist').append(t);
+        }
+      });
+    },
+});
+</script>

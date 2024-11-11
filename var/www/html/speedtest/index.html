@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Speed Test</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id='download'>
+    DownLoad <span >Mbps </span>
+    <div id='download_speed'>
+
+    </div>
+</div>
+<div id='upload'>
+    UpLoad <span >Mbps </span>
+     <div id='upload_speed'>
+    
+    </div>
+</div>
+<div id='parent_of_button'>
+<button id='run_button'>Run</button>
+</div>
+<div id='parent_circle'>
+  <div class='circle' id='circle_background' style='--color:#232f4e;'></div>
+  <div class='circle' id='circle_range' style='--percentage:0;--color:rgba(0,0,255,0.75);'></div>
+  <div id='all_number'>
+    <div id='zero'>0</div>
+    <div id='one'>1</div>
+    <div id='five'>5</div>
+    <div id='ten'>10</div>
+    <div id='twenty'>20</div>
+    <div id='thirty'>30</div>
+    <div id='fifty'>50</div>
+    <div id='hundred'>100</div>
+  </div>
+  <div id='current_speed'></div>
+</div>
+   <div id='trapezoid'></div>
+<div id='meta_data'>
+<div id='type'>Connection type: <span id='connection_type'></span></div>
+<div id='status'>Network status: <span id='network_status'></span></div>
+<div id='rtt_value'>Rtt (Round-trip delay): <span id='rtt'></span></div>
+<div>Broswer: <span id='broswer'></span></div>
+<div>OS: <span id='os'></span> </div>
+<div>Device type: <span id='device'></span> </div>
+</div>
+<div id='time'></div>
+<div id='download_or_upload'></div>
+<div id='info'>
+  <div id='ip'></div>
+  <div id='isp'></div>
+  <div id='city'></div>
+  <div id='country'></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js" integrity="sha512-hZf9Qhp3rlDJBvAKvmiG+goaaKRZA6LKUO35oK6EsM0/kjPK32Yw7URqrq3Q+Nvbbt8Usss+IekL7CRn83dYmw==" crossorigin="anonymous"></script>
+<script id='web_worker_one' type='javascript/worker'>
+ self.onmessage = function(e) {
+  const src = e.data
+  const xhr = new XMLHttpRequest();
+  const now = performance.now();
+  xhr.responseType = 'blob';
+  xhr.onload = () => {
+    self.postMessage(performance.now() - now)
+  }
+  xhr.open('GET', src, true);
+  xhr.send()
+};
+
+</script>
+<script id='web_worker_two' type='javascript/worker'>
+  self.onmessage = () => get_upload_speed();
+
+function get_upload_speed() {
+const xhr = new XMLHttpRequest();
+  const url = `https://google.com/?${new Date().getTime()}`;
+  const data = return_random_string();
+  let start_time, end_time;
+  speed = 0;
+  xhr.open('POST', url,true);
+  start_time = performance.now();
+  xhr.send(data);
+  xhr.onreadystatechange = function(event) {
+    if (xhr.readyState === 4) {
+      end_time = performance.now();
+      const speed = new Blob([result]).size / 1024 / 1024 / (end_time - start_time) * 1000 ;
+      self.postMessage(speed)
+    };
+  };
+}
+
+function return_random_string() {
+  //prevents gzip effect (a compression technique when process large file or data ) 
+  const character_set = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+`-=[]\{}|;':,./<> ? ";
+  result = ''; //using += is the fastest method to concentrate string 
+  for (let i = 0; i <1024 * 512;i++) 
+  result += character_set[Math.floor(Math.random() * character_set.length)];
+return result;
+};
+ </script>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+@keyframes appearing {
+  from {
+    opacity: 1;
+    text-shadow: 1px 1px 10px #fff, 1px 1px 10px #ccc;
+    color: #fff;
+  }
+  to {
+    opacity: 0.7;
+  }
+}
+
+body {
+  background-color: #141526
+}
+
+ :root {
+  --percentage: 70;
+  --thickness: 22px;
+  --color: transparent;
+  --width: 500px;
+  --angle: -125deg;
+}
+
+.circle {
+  width: var(--width);
+  height: var(--width);
+  aspect-ratio: 1/1;
+  transform: rotate(var(--angle));
+  position: relative;
+}
+
+#parent_circle {
+  display: none;
+}
+
+.circle:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(farthest-side, var(--color) 98%, #0000) top/var(--thickness) var(--thickness) no-repeat, conic-gradient(var(--color) calc(var(--percentage)*1%), #0000 0);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(99% - var(--thickness)), #000 calc(100% - var(--thickness)));
+  mask: radial-gradient(farthest-side, #0000 calc(99% - var(--thickness)), #000 calc(100% - var(--thickness)));
+  background-size: 0 0, auto;
+}
+
+#parent_circle>div:not(#current_speed) {
+  position: absolute;
+  bottom: 0;
+  left: calc(50vw - 500px/2);
+}
+
+#all_number>div {
+  color: #898993;
+  font-family: sans-serif;
+  font-weight: bolder;
+  font-size: 1.5em;
+  opacity: 0
+}
+
+#zero {
+  position: absolute;
+  top: -150px;
+  left: 90px;
+}
+
+#one {
+  position: absolute;
+  top: -250px;
+  left: 50px;
+}
+
+#five {
+  position: absolute;
+  top: -350px;
+  left: 75px;
+}
+
+#ten {
+  position: absolute;
+  top: -425px;
+  left: 150px
+}
+
+#twenty {
+  position: absolute;
+  top: -425px;
+  left: 325px
+}
+
+#thirty {
+  position: absolute;
+  top: -350px;
+  left: 400px
+}
+
+#fifty {
+  position: absolute;
+  top: -250px;
+  left: 420px;
+}
+
+#hundred {
+  position: absolute;
+  top: -150px;
+  left: 375px;
+}
+
+.shining {
+  color: #fff !important;
+  text-shadow: 1px 1px 10px #fff, 1px 1px 10px #ccc;
+  animation: 0.5s shine linear infinite;
+}
+
+@keyframes shine {
+  from {
+    text-shadow: 1px 1px 10px #fff, 1px 1px 10px white;
+  }
+}
+
+#trapezoid {
+  clip-path: polygon(0 100%, 25% 0, 80% 0, 100% 100%);
+  background-image: linear-gradient(to bottom, rgba(250, 250, 250, 0.85), transparent);
+  height: 150px;
+  width: 35px;
+  position: absolute;
+  left: calc(50vw - 30px/2);
+  bottom: 250px;
+  transform: rotate(-125deg);
+  transform-origin: bottom center;
+  display: none;
+}
+
+#current_speed {
+  font-size: 2.5em;
+  color: white;
+  position: absolute;
+  bottom: 10vh;
+  left: 47.5vw;
+  font-weight: 900;
+}
+
+#info>#ip,
+#info>#country {
+  color: #8b8da2;
+  position: absolute;
+  top: 95vh;
+}
+
+#info>#ip {
+  left: 30vw;
+}
+
+#info>#country {
+  left: 60vw;
+}
+
+#info>#isp,
+#info>#city {
+  color: white;
+  font-size: 1.4em;
+  font-weight: 100;
+  position: absolute;
+  top: 90vh;
+}
+
+#info>#isp {
+  left: 30.5vw;
+}
+
+#info>#city {
+  left: 60vw;
+}
+
+#download,
+#upload {
+  color: white;
+  position: absolute;
+  left: 80vw;
+  font-size: 1.85em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+#download {
+  top: 15vh;
+}
+
+#upload {
+  top: 50vh;
+}
+
+#download>span,
+#upload>span {
+  color: #8b8da2;
+  font-size: 0.6em;
+  margin-left: 1vw;
+  text-transform: capitalize;
+}
+
+#download_speed,
+#upload_speed {
+  font-size: 2em;
+  font-family: sans-serif;
+  font-weight: 100;
+  margin-top: 3vh;
+}
+
+#time {
+  display: flex;
+  color: #1db8f6;
+  position: absolute;
+  top: 5vh;
+  left: 45vw;
+  font-size: 1.3em;
+  font-weight: 900;
+}
+
+#meta_data>div {
+  color: rgba(250, 250, 250, 0.9);
+  font-size: 1.25em;
+  margin: 2vh;
+}
+
+#meta_data {
+  position: absolute;
+  top: 20vh;
+  left: 5vw;
+}
+
+#meta_data span {
+  color: whitesmoke;
+}
+
+button {
+  background: none;
+  border-radius: 50%;
+  color: whitesmoke;
+  font-size: 2.2em;
+  font-weight: 900;
+  background: transparent;
+  border: none;
+  background-color: #141526;
+  width: 200px;
+  height: 200px;
+  border-radius: 1000px;
+}
+
+#parent_of_button {
+  position: absolute;
+  left: calc(50vw - 100px);
+  top: calc(50vh - 100px);
+  background: -webkit-linear-gradient(left top, #23cdfa 0%, #70ffbd 100%);
+  width: 200px;
+  height: 200px;
+  border-radius: 1000px;
+  padding: 4px;
+}
+
+canvas {
+  width: 75vw !important;
+  height: 85vh !important;
+  position: absolute;
+  top: 7.5vh;
+  left: 2vw;
+}
+
+#download_or_upload {
+  color: white;
+  font-size: 1.5em;
+  font-weight: 900;
+  position: absolute;
+  left: 47.5%;
+  top: 14%;
+}
